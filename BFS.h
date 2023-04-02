@@ -17,7 +17,6 @@ class BFS
 private:
 	int target[9] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 	int col = 3;
-	void AddNodePrivate(Node* n);
 	void MoveToLeft(Node* n);
 	void MoveToRight(Node* n);
 	void MoveToUp(Node* n);
@@ -30,7 +29,6 @@ public:
 	BFS();
 	BFS(int p[]);
 	Node* CreateNode(int p[]);
-	void AddNode(Node *n);
 	void PrintBoard(Node* n);
 	bool SamePuzzle(int p1[], int p2[]);
 	bool GoalFound(Node* n);

@@ -5,6 +5,7 @@ using namespace std;
 int main()
 {
     int initPuzzle[9] = { 1, 2, 4, 3, 0, 5, 7, 6, 8 };
+    //int initPuzzle[9] = { 1, 0, 2, 3, 4, 5, 6, 7, 8 };
     vector<Node*> result;
     
     BFS bfs(initPuzzle);

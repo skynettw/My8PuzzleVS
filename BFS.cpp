@@ -34,14 +34,6 @@ void BFS::PrintBoard(Node* n) {
 	cout << "------" << endl;
 }
 
-void BFS::AddNodePrivate(Node* n) {
-	ExpandNode(n);
-}
-
-void BFS::AddNode(Node* n) {
-	AddNodePrivate(n);
-}
-
 bool BFS::SamePuzzle(int p1[], int p2[]) {
 	bool Same=true;
 	for (int i = 0; i < 9; i++) {
