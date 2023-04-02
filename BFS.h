@@ -3,6 +3,7 @@
 #include <vector>
 
 using namespace std;
+#define MAX_DEPTH 1000000
 
 struct Node {
 		vector<Node*> children;
@@ -16,20 +17,25 @@ class BFS
 private:
 	int target[9] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 	int col = 3;
-	void AddNodePrivate(int p[], Node* Ptr);
+	void AddNodePrivate(Node* n);
 	void MoveToLeft(Node* n);
 	void MoveToRight(Node* n);
 	void MoveToUp(Node* n);
 	void MoveToDown(Node* n);
+	void CopyPuzzle(int p1[], int p2[]);
 public:
 	Node* root;
+	int Found = false;
+	int depth = 0;
 	BFS();
 	BFS(int p[]);
 	Node* CreateNode(int p[]);
-	void AddNode(int p[]);
+	void AddNode(Node *n);
 	void PrintBoard(Node* n);
 	bool SamePuzzle(int p1[], int p2[]);
-	bool GoalFound(int p[]);
+	bool GoalFound(Node* n);
 	void ExpandNode(Node* n);
+	vector<Node*> BFSearch(Node* n);
+	vector<Node*> PathToResult(Node* n);
 };
 

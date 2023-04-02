@@ -34,12 +34,12 @@ void BFS::PrintBoard(Node* n) {
 	cout << "------" << endl;
 }
 
-void BFS::AddNodePrivate(int p[], Node* Ptr) {
-
+void BFS::AddNodePrivate(Node* n) {
+	ExpandNode(n);
 }
 
-void BFS::AddNode(int p[]) {
-	AddNodePrivate(p, root);
+void BFS::AddNode(Node* n) {
+	AddNodePrivate(n);
 }
 
 bool BFS::SamePuzzle(int p1[], int p2[]) {
@@ -53,8 +53,8 @@ bool BFS::SamePuzzle(int p1[], int p2[]) {
 	return Same;
 }
 
-bool BFS::GoalFound(int p[]) {
-	return SamePuzzle(p, target);
+bool BFS::GoalFound(Node* n) {
+	return SamePuzzle(n->puzzle, target);
 }
 
 void BFS::ExpandNode(Node* n) {
@@ -64,66 +64,120 @@ void BFS::ExpandNode(Node* n) {
 	MoveToDown(n);
 }
 
-void BFS::MoveToRight(int p[], int i) {
-	if (i % col < col - 1)
-	{
-		int pc[9];
-		CopyPuzzle(pc, p);
-
-		int temp = pc[i + 1];
-		pc[i + 1] = pc[i];
-		pc[i] = temp;
-
-		Node* child = new Node(pc);
-		children.push_back(child);
-		child->parent = this;
+void BFS::CopyPuzzle(int p1[], int p2[]) {
+	for (int i = 0; i < 9; i++) {
+		p1[i] = p2[i];
 	}
 }
 
-void BFS::MoveToLeft(int p[], int i) {
-	if (i % col > 0)
+void BFS::MoveToRight(Node* n) {
+
+	if (n->x % col < col - 1)
 	{
 		int pc[9];
-		CopyPuzzle(pc, p);
+		CopyPuzzle(pc, n->puzzle);
 
-		int temp = pc[i - 1];
-		pc[i - 1] = pc[i];
-		pc[i] = temp;
+		int temp = pc[n->x + 1];
+		pc[n->x + 1] = pc[n->x];
+		pc[n->x] = temp;
 
-		Node* child = new Node(pc);
-		children.push_back(child);
-		child->parent = this;
+		if (n->parent!=NULL && SamePuzzle(pc, n->parent->puzzle)) {
+			return;
+		}
+		Node* child = CreateNode(pc);
+		child->parent = n;
+		n->children.push_back(child);
 	}
 }
 
-void BFS::MoveToUp(int p[], int i) {
-	if (i - col >= 0)
+void BFS::MoveToLeft(Node* n) {
+	if (n->x % col > 0)
 	{
 		int pc[9];
-		CopyPuzzle(pc, p);
+		CopyPuzzle(pc, n->puzzle);
 
-		int temp = pc[i - 3];
-		pc[i - 3] = pc[i];
-		pc[i] = temp;
-
-		Node* child = new Node(pc);
-		children.push_back(child);
-		child->parent = this;
+		int temp = pc[n->x - 1];
+		pc[n->x - 1] = pc[n->x];
+		pc[n->x] = temp;
+		
+		if (n->parent != NULL && SamePuzzle(pc, n->parent->puzzle)) {
+			return;
+		}
+		Node* child = CreateNode(pc);
+		child->parent = n;
+		n->children.push_back(child);
+		
 	}
 }
 
-void BFS::MoveToDown(int p[], int i) {
-	if (i + col < 9)
+void BFS::MoveToUp(Node* n) {
+	if (n->x - col >= 0)
 	{
 		int pc[9];
-		CopyPuzzle(pc, p);
-
-		int temp = pc[i + 3];
-		pc[i + 3] = pc[i];
-		pc[i] = temp;
-
-		Node* child = new Node(pc);
-		children.push_back(child);
-		child->parent = this;
+		CopyPuzzle(pc, n->puzzle);
+		int temp = pc[n->x - 3];
+		pc[n->x - 3] = pc[n->x];
+		pc[n->x] = temp;
+		if (n->parent != NULL && SamePuzzle(pc, n->parent->puzzle)) {
+			return;
+		}
+		Node* child = CreateNode(pc);
+		child->parent = n;
+		n->children.push_back(child);
 	}
 }
+
+void BFS::MoveToDown(Node* n) {
+	if (n->x + col < 9)
+	{
+		int pc[9];
+		CopyPuzzle(pc, n->puzzle);
+		int temp = pc[n->x + 3];
+		pc[n->x + 3] = pc[n->x];
+		pc[n->x] = temp;
+		if (n->parent != NULL && SamePuzzle(pc, n->parent->puzzle)) {
+			return;
+		}
+		Node* child = CreateNode(pc);
+		child->parent = n;
+		n->children.push_back(child);
+	}
+}
+
+vector<Node*> BFS::BFSearch(Node* n) {
+	vector<Node*> queue;
+	vector<Node*> visited;
+	vector<Node*> result_path;
+	queue.push_back(n);
+	while (queue.size() > 0) {
+		Node* current = queue[0];
+		queue.erase(queue.begin());
+		visited.push_back(current);
+		if (GoalFound(current)) {
+			Found = true;
+			result_path = PathToResult(current);
+			return result_path;
+		}
+		else {
+			if (depth++ > MAX_DEPTH)
+			{
+				Found = false;
+				return visited;
+			}
+			ExpandNode(current);
+			for (int i = 0; i < current->children.size(); i++) {
+				queue.push_back(current->children[i]);
+			}
+		}
+	}
+	return visited;
+}	
+
+vector<Node*> BFS::PathToResult(Node* n) {
+	vector<Node*> path;
+	while (n != NULL) {
+		path.push_back(n);
+		n = n->parent;
+	}
+	return path;
+}	
