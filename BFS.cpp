@@ -16,6 +16,9 @@ Node* BFS::CreateNode(int p[]) {
 	Node* n = new Node;
 	for (int i = 0; i < 9; i++) {
 		n->puzzle[i] = p[i];
+		if (p[i] == 0) {
+			n->x = i;
+		}
 	}
 	n->parent = NULL;
 	return n;
@@ -55,14 +58,10 @@ bool BFS::GoalFound(int p[]) {
 }
 
 void BFS::ExpandNode(Node* n) {
-	int x = 0;
-	for (int i = 0; i < 9; i++) {
-		if (n->puzzle[i] == 0) {
-			x = i;
-			break;
-		}
-	}
-	MoveToLeft(n, x);
+	MoveToLeft(n);
+	MoveToRight(n);
+	MoveToUp(n);
+	MoveToDown(n);
 }
 
 void BFS::MoveToRight(int p[], int i) {
