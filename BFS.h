@@ -3,7 +3,7 @@
 #include <vector>
 
 using namespace std;
-#define MAX_DEPTH 1000000
+#define MAX_NODES 1000000
 
 struct Node {
 		vector<Node*> children;
@@ -25,7 +25,7 @@ private:
 public:
 	Node* root;
 	int Found = false;
-	int depth = 0;
+	int nodes = 0;
 	BFS();
 	BFS(int p[]);
 	Node* CreateNode(int p[]);
@@ -35,5 +35,6 @@ public:
 	void ExpandNode(Node* n);
 	vector<Node*> BFSearch(Node* n);
 	vector<Node*> PathToResult(Node* n);
+	bool Contains(vector<Node*> v, Node* n);
 };
 

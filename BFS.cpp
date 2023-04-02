@@ -136,11 +136,21 @@ void BFS::MoveToDown(Node* n) {
 	}
 }
 
+bool BFS::Contains(vector<Node*> v, Node* n) {
+	for (int i = 0; i < v.size(); i++) {
+		if (SamePuzzle(v[i]->puzzle, n->puzzle)) {
+			return true;
+		}
+	}
+	return false;
+}
+
 vector<Node*> BFS::BFSearch(Node* n) {
 	vector<Node*> queue;
 	vector<Node*> visited;
 	vector<Node*> result_path;
 	queue.push_back(n);
+	nodes = 0;
 	while (queue.size() > 0) {
 		Node* current = queue[0];
 		queue.erase(queue.begin());
@@ -151,14 +161,17 @@ vector<Node*> BFS::BFSearch(Node* n) {
 			return result_path;
 		}
 		else {
-			if (depth++ > MAX_DEPTH)
+			if (nodes++ > MAX_NODES)
 			{
 				Found = false;
 				return visited;
 			}
 			ExpandNode(current);
 			for (int i = 0; i < current->children.size(); i++) {
-				queue.push_back(current->children[i]);
+				if (!Contains(queue, current->children[i]) && !Contains(visited, current->children[i])) {
+					queue.push_back(current->children[i]);
+				}
+				
 			}
 		}
 	}
