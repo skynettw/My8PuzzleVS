@@ -161,8 +161,8 @@ vector<Node*> BFS::BFSearch(Node* n) {
 	queue.push_back(n);
 	nodes = 0;
 	while (queue.size() > 0) {
-		Node* current = queue[0];
-		queue.erase(queue.begin());
+		Node* current = queue[0];			// 拿第一個
+		queue.erase(queue.begin());         // 刪除第一個
 		visited.push_back(current);
 		if (GoalFound(current)) {
 			Found = true;
@@ -194,8 +194,8 @@ vector<Node*> BFS::DFSearch(Node* n) {
 	stack.push_back(n);
 	nodes = 0;
 	while (stack.size() > 0) {
-		Node* current = stack[stack.size()-1];
-		stack.pop_back();
+		Node* current = stack[stack.size()-1]; // 拿最後一個
+		stack.pop_back();                      // 移除最後一個
 		visited.push_back(current);
 		if (GoalFound(current)) {
 			Found = true;
@@ -219,3 +219,14 @@ vector<Node*> BFS::DFSearch(Node* n) {
 	return visited;
 }
 
+bool BFS::MahatanDistance(Node* n) {
+	int sum = 0;
+	for (int i = 0; i < 9; i++) {
+		if (n->puzzle[i] != 0) {
+			int x = abs(i % 3 - n->puzzle[i] % 3);
+			int y = abs(i / 3 - n->puzzle[i] / 3);
+			sum += x + y;
+		}
+	}
+	return sum;
+}
