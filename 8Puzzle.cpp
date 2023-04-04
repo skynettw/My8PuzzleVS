@@ -1,5 +1,5 @@
-﻿#include <iostream>
-#include "BFS.h"
+#include <iostream>
+#include "BFS.cpp"
 using namespace std;
 
 int main()

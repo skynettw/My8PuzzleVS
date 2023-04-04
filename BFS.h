@@ -37,6 +37,6 @@ public:
 	bool Contains(vector<Node*> v, Node* n);
 	vector<Node*> BFSearch(Node* n);
 	vector<Node*> DFSearch(Node* n);
-	bool MahatanDistance(Node* n);
+	bool ManhattanDistance(Node* n);
 };
 

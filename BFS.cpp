@@ -219,7 +219,7 @@ vector<Node*> BFS::DFSearch(Node* n) {
 	return visited;
 }
 
-bool BFS::MahatanDistance(Node* n) {
+bool BFS::ManhattanDistance(Node* n) {
 	int sum = 0;
 	for (int i = 0; i < 9; i++) {
 		if (n->puzzle[i] != 0) {
