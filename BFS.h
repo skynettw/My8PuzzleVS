@@ -33,8 +33,9 @@ public:
 	bool SamePuzzle(int p1[], int p2[]);
 	bool GoalFound(Node* n);
 	void ExpandNode(Node* n);
-	vector<Node*> BFSearch(Node* n);
 	vector<Node*> PathToResult(Node* n);
 	bool Contains(vector<Node*> v, Node* n);
+	vector<Node*> BFSearch(Node* n);
+	vector<Node*> DFSearch(Node* n);
 };
 

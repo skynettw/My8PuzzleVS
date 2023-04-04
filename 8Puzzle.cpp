@@ -13,11 +13,11 @@ int main()
     
     result=bfs.BFSearch(bfs.root);
     if (bfs.Found) {
-        cout << "Found the result, nodes checked=" << bfs.nodes << endl;
-        cout << result.size() << endl;
         for (int i = result.size()-1; i >= 0; i--) {
             bfs.PrintBoard(result[i]);
         }
+        cout << "Found the result, nodes checked=" << bfs.nodes << endl;
+        cout << result.size() << endl;
         
 	} else {
         cout << "No solution, nodes checked=" << bfs.nodes << endl;

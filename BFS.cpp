@@ -145,6 +145,15 @@ bool BFS::Contains(vector<Node*> v, Node* n) {
 	return false;
 }
 
+vector<Node*> BFS::PathToResult(Node* n) {
+	vector<Node*> path;
+	while (n != NULL) {
+		path.push_back(n);
+		n = n->parent;
+	}
+	return path;
+}
+
 vector<Node*> BFS::BFSearch(Node* n) {
 	vector<Node*> queue;
 	vector<Node*> visited;
@@ -178,11 +187,35 @@ vector<Node*> BFS::BFSearch(Node* n) {
 	return visited;
 }	
 
-vector<Node*> BFS::PathToResult(Node* n) {
-	vector<Node*> path;
-	while (n != NULL) {
-		path.push_back(n);
-		n = n->parent;
+vector<Node*> BFS::DFSearch(Node* n) {
+	vector<Node*> stack;
+	vector<Node*> visited;
+	vector<Node*> result_path;
+	stack.push_back(n);
+	nodes = 0;
+	while (stack.size() > 0) {
+		Node* current = stack[stack.size()-1];
+		stack.pop_back();
+		visited.push_back(current);
+		if (GoalFound(current)) {
+			Found = true;
+			result_path = PathToResult(current);
+			return result_path;
+		}
+		else {
+			if (nodes++ > MAX_NODES)
+			{
+				Found = false;
+				return visited;
+			}
+			ExpandNode(current);
+			for (int i = 0; i < current->children.size(); i++) {
+				if (!Contains(stack, current->children[i]) && !Contains(visited, current->children[i])) {
+					stack.push_back(current->children[i]);
+				}
+			}
+		}
 	}
-	return path;
-}	
+	return visited;
+}
+
